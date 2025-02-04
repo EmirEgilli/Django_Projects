@@ -1,0 +1,48 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block body %}
+<div class="container mx-auto px-10">
+    <h2 class="text-center text-2xl font-bold my-5">Feed</h2>
+    <div class="grid grid-cols-1 gap-6">
+        {% for post in posts %}
+        <!--Card starts here-->
+        <div class="rounded overflow-hidden w-[470px] h-[470px] bg-white shadow-lg mx-auto">
+            <div class="user-container flex mx-5 my-5">
+                <img class="h-10 w-10 rounded-full" src="{{ post.user.profile.photo.url }}" alt="">
+                <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{ post.user }}</span></div>
+            </div>
+            <img src="{{ post.image.url }}" alt="">
+            <div class="px-6 py-4">
+                <p class="text-gray-700 text-base">{{ post.caption }}</p>
+            </div>
+            <div class="px-6 py-4 flex gap-3">
+                <button class="btn-like" id="{{ post.id }}">
+                    <img class="w-5 h-5" src="{% static 'users/images/like.png' %}" alt="">
+                </button>
+                <img class="w-5 h-5" src="{% static 'users/images/comment.png' %}" alt="">
+                <img class="w-5 h-5" src="{% static 'users/images/share.png' %}" alt="">
+            </div>
+        </div>
+        <!--Card ends here-->
+        {% endfor %}
+    </div>
+</div>
+<script type="text/javascript">
+    window.CSRF_TOKEN = "{{ csrf_token }}"
+    $(document).on('click', '.btn-like', function(){
+        var post_id = this.id
+        $.ajax({
+            method: 'POST',
+            url: '{% url "like_post" %}',
+            data: {post_id: post_id, csrfmiddlewaretoken: window.CSRF_TOKEN},
+            success: function(response) {
+                if (response.liked) {
+                    $('#' + post_id).find('img').attr('src', '{% static "users/images/liked.png" %}');
+                } else {
+                    $('#' + post_id).find('img').attr('src', '{% static "users/images/like.png" %}');
+                }
+            }
+        })
+    })
+</script>
+{% endblock %}
