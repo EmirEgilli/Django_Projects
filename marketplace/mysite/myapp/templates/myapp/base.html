@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <nav class="shadow-lg">
+        <div class="flex flex-wrap justify-between ml-5 items-center mx-auto px-4 py-2.5">
+            <a href="{% url 'index' %}" class="flex items-center">
+                <img class="h-9 mr-3" src="https://cdn4.iconfinder.com/data/icons/plastic-iconshock/256/Shopping_cart.png" alt="">
+                <span class="self-center text-xml font-semibold">Digital Marketplace</span>
+            </a>
+            <div class="flex items-center">
+                <a href="{% url 'dashboard' %}" class="mr-6 text-sm font-medium text-grey-500">Dashboard</a>
+                <a href="{% url 'sales' %}" class="mr-6 text-sm font-medium text-grey-500">Sales</a>
+                <a href="" class="mr-6 text-sm font-medium text-grey-700">Orders</a>
+                <a href="{% url 'createproduct' %}" class="mr-6 text-sm font-medium text-grey-500">Create Products</a>
+                <a href="{% url 'purchases' %}" class="mr-6 text-sm font-medium text-grey-500">My Purchases</a>
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <a href="#" class="mr-6 text-sm font-medium text-grey-500" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+    {% block body %}
+    {% endblock %}
+</body>
+</html>
